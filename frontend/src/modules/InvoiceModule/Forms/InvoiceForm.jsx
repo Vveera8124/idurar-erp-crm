@@ -174,11 +174,14 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
       </Row>
       <Divider dashed />
       <Row gutter={[12, 12]} style={{ position: 'relative' }}>
-        <Col className="gutter-row" span={5}>
+        <Col className="gutter-row" span={3}>
           <p>{translate('Item')}</p>
         </Col>
-        <Col className="gutter-row" span={7}>
+        <Col className="gutter-row" span={4}>
           <p>{translate('Description')}</p>
+        </Col>
+        <Col className="gutter-row" span={5}>
+          <p>{translate('Note')}</p>
         </Col>
         <Col className="gutter-row" span={3}>
           <p>{translate('Quantity')}</p>{' '}
@@ -194,7 +197,13 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
         {(fields, { add, remove }) => (
           <>
             {fields.map((field) => (
-              <ItemRow key={field.key} remove={remove} field={field} current={current}></ItemRow>
+              <ItemRow
+                key={field.key}
+                remove={remove}
+                field={field}
+                current={current}
+                showNotes
+              ></ItemRow>
             ))}
             <Form.Item>
               <Button

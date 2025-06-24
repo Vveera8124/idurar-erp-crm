@@ -5,10 +5,18 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useMoney, useDate } from '@/settings';
 import calculate from '@/utils/calculate';
 
-export default function ItemRow({ field, remove, current = null }) {
+const ITEM_CONFIG = {
+  invoice: { spans: { itemName: 3, description: 4, note: 5, quantity: 3, price: 4, total: 5 } },
+  default: { spans: { itemName: 5, description: 7, note: 0, quantity: 3, price: 4, total: 5 } },
+};
+
+export default function ItemRow({ field, remove, current = null, showNotes = false }) {
   const [totalState, setTotal] = useState(undefined);
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
+
+  //dynmically creating span
+  const spanConfig = showNotes ? ITEM_CONFIG.invoice.spans : ITEM_CONFIG.default.spans;
 
   const money = useMoney();
   const updateQt = (value) => {
@@ -53,7 +61,7 @@ export default function ItemRow({ field, remove, current = null }) {
 
   return (
     <Row gutter={[12, 12]} style={{ position: 'relative' }}>
-      <Col className="gutter-row" span={5}>
+      <Col className="gutter-row" span={spanConfig.itemName}>
         <Form.Item
           name={[field.name, 'itemName']}
           rules={[
@@ -70,17 +78,36 @@ export default function ItemRow({ field, remove, current = null }) {
           <Input placeholder="Item Name" />
         </Form.Item>
       </Col>
-      <Col className="gutter-row" span={7}>
+      <Col className="gutter-row" span={spanConfig.description}>
         <Form.Item name={[field.name, 'description']}>
           <Input placeholder="description Name" />
         </Form.Item>
       </Col>
-      <Col className="gutter-row" span={3}>
+      {showNotes && (
+        <Col className="gutter-row" span={spanConfig.note}>
+          <Form.Item
+            name={[field.name, 'note']}
+            rules={[
+              {
+                required: true,
+                message: 'note is required',
+              },
+            ]}
+          >
+            <Input.TextArea
+              autoSize={{ minRows: 1, maxRows: 2 }}
+              style={{ resize: 'vertical' }}
+              placeholder="Add a note"
+            />
+          </Form.Item>
+        </Col>
+      )}
+      <Col className="gutter-row" span={spanConfig.quantity}>
         <Form.Item name={[field.name, 'quantity']} rules={[{ required: true }]}>
           <InputNumber style={{ width: '100%' }} min={0} onChange={updateQt} />
         </Form.Item>
       </Col>
-      <Col className="gutter-row" span={4}>
+      <Col className="gutter-row" span={spanConfig.price}>
         <Form.Item name={[field.name, 'price']} rules={[{ required: true }]}>
           <InputNumber
             className="moneyInput"
@@ -92,7 +119,7 @@ export default function ItemRow({ field, remove, current = null }) {
           />
         </Form.Item>
       </Col>
-      <Col className="gutter-row" span={5}>
+      <Col className="gutter-row" span={spanConfig.total}>
         <Form.Item name={[field.name, 'total']}>
           <Form.Item>
             <InputNumber

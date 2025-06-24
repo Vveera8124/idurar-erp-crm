@@ -24,16 +24,26 @@ import { useMoney, useDate } from '@/settings';
 import useMail from '@/hooks/useMail';
 import { useNavigate } from 'react-router-dom';
 
-const Item = ({ item, currentErp }) => {
+const ITEM_CONFIG = {
+  invoice: { spans: { product: 6, itemName: 8, note: 6, quantity: 3, price: 4, total: 5 } },
+  default: { spans: { product: 6, itemName: 8, note: 0, quantity: 3, price: 4, total: 5 } },
+};
+
+const Item = ({ item, currentErp, showNotes = false }) => {
   const { moneyFormatter } = useMoney();
   return (
     <Row gutter={[12, 0]} key={item._id}>
-      <Col className="gutter-row" span={11}>
+      <Col className="gutter-row" span={6}>
         <p style={{ marginBottom: 5 }}>
           <strong>{item.itemName}</strong>
         </p>
         <p>{item.description}</p>
       </Col>
+      {showNotes && (
+        <Col className="gutter-row" span={6}>
+          <p>{item.note}</p>
+        </Col>
+      )}
       <Col className="gutter-row" span={4}>
         <p
           style={{
@@ -43,7 +53,8 @@ const Item = ({ item, currentErp }) => {
           {moneyFormatter({ amount: item.price, currency_code: currentErp.currency })}
         </p>
       </Col>
-      <Col className="gutter-row" span={4}>
+
+      <Col className="gutter-row" span={3}>
         <p
           style={{
             textAlign: 'right',
@@ -67,7 +78,7 @@ const Item = ({ item, currentErp }) => {
   );
 };
 
-export default function ReadItem({ config, selectedItem }) {
+export default function ReadItem({ config, selectedItem, showNotes = false }) {
   const translate = useLanguage();
   const { entity, ENTITY_NAME } = config;
   const dispatch = useDispatch();
@@ -98,6 +109,9 @@ export default function ReadItem({ config, selectedItem }) {
   const [itemslist, setItemsList] = useState([]);
   const [currentErp, setCurrentErp] = useState(selectedItem ?? resetErp);
   const [client, setClient] = useState({});
+
+  //dynamically assigning span
+  const spanConfig = showNotes ? ITEM_CONFIG.invoice.spans : ITEM_CONFIG.default.spans;
 
   useEffect(() => {
     if (currentResult) {
@@ -242,12 +256,19 @@ export default function ReadItem({ config, selectedItem }) {
       </Descriptions>
       <Divider />
       <Row gutter={[12, 0]}>
-        <Col className="gutter-row" span={11}>
+        <Col className="gutter-row" span={spanConfig.product}>
           <p>
             <strong>{translate('Product')}</strong>
           </p>
         </Col>
-        <Col className="gutter-row" span={4}>
+        {showNotes && (
+          <Col className="gutter-row" span={spanConfig.note}>
+            <p>
+              <strong>{translate('Note')}</strong>
+            </p>
+          </Col>
+        )}
+        <Col className="gutter-row" span={spanConfig.price}>
           <p
             style={{
               textAlign: 'right',
@@ -256,7 +277,7 @@ export default function ReadItem({ config, selectedItem }) {
             <strong>{translate('Price')}</strong>
           </p>
         </Col>
-        <Col className="gutter-row" span={4}>
+        <Col className="gutter-row" span={spanConfig.quantity}>
           <p
             style={{
               textAlign: 'right',
@@ -265,7 +286,7 @@ export default function ReadItem({ config, selectedItem }) {
             <strong>{translate('Quantity')}</strong>
           </p>
         </Col>
-        <Col className="gutter-row" span={5}>
+        <Col className="gutter-row" span={spanConfig.total}>
           <p
             style={{
               textAlign: 'right',
@@ -277,7 +298,7 @@ export default function ReadItem({ config, selectedItem }) {
         <Divider />
       </Row>
       {itemslist.map((item) => (
-        <Item key={item._id} item={item} currentErp={currentErp}></Item>
+        <Item key={item._id} item={item} currentErp={currentErp} showNotes={showNotes}></Item>
       ))}
       <div
         style={{

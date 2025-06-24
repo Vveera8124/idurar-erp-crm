@@ -10,6 +10,7 @@ const coreApiRouter = require('./routes/coreRoutes/coreApi');
 const coreDownloadRouter = require('./routes/coreRoutes/coreDownloadRouter');
 const corePublicRouter = require('./routes/coreRoutes/corePublicRouter');
 const adminAuth = require('./controllers/coreControllers/adminAuth');
+const queryRouter = require('./routes/appRoutes/queryRouter');
 const aiRouter = require('./routes/appRoutes/aiRouter');
 
 const errorHandlers = require('./handlers/errorHandlers');
@@ -44,6 +45,8 @@ app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 app.use('/api/ai', aiRouter);
 
+//add query router
+app.use('/api', queryRouter);
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
 

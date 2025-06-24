@@ -29,6 +29,12 @@ const Profile = lazy(() => import('@/pages/Profile'));
 
 const About = lazy(() => import('@/pages/About'));
 
+//adding the query module routes
+const Queries = lazy(() => import('@/pages/Queries'));
+const QueriesCreate = lazy(() => import('@/pages/Queries/QueriesCreate'));
+const QueriesUpdate = lazy(() => import('@/pages/Queries/QueriesUpdate'));
+const QueriesRead = lazy(() => import('@/pages/Queries/QueriesRead'));
+
 let routes = {
   expense: [],
   default: [
@@ -127,6 +133,10 @@ let routes = {
       path: '*',
       element: <NotFound />,
     },
+    { path: '/queries', element: <Queries /> },
+    { path: '/queries/create', element: <QueriesCreate /> },
+    { path: '/queries/update/:id', element: <QueriesUpdate /> },
+    { path: '/queries/read/:id', element: <QueriesRead /> },
   ],
 };
 

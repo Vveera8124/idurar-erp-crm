@@ -4,11 +4,10 @@ const { summarySchema } = require('./schemaValidate');
 const summary = async (req, res) => {
   const { error, value } = summarySchema.validate(req.body, { stripUnknown: true });
   if (error) {
-    const { details } = error;
     return res.status(400).json({
       success: false,
       result: null,
-      message: details[0]?.message,
+      message: 'Cannot generate summary for empty notes',
     });
   }
   const combined = value.map((note) => note).join('\n');

@@ -24,6 +24,8 @@ import { useMoney, useDate } from '@/settings';
 import useMail from '@/hooks/useMail';
 import { useNavigate } from 'react-router-dom';
 
+import SummaryBox from '@/components/SummaryBox';
+
 const ITEM_CONFIG = {
   invoice: { spans: { product: 6, itemName: 8, note: 6, quantity: 3, price: 4, total: 5 } },
   default: { spans: { product: 6, itemName: 8, note: 0, quantity: 3, price: 4, total: 5 } },
@@ -338,6 +340,12 @@ export default function ReadItem({ config, selectedItem, showNotes = false }) {
           </Col>
         </Row>
       </div>
+      {showNotes && (
+        <>
+          <div style={{ clear: 'both' }} />
+          <SummaryBox notes={selectedItem.items.map((note) => note?.note)} />
+        </>
+      )}
     </>
   );
 }

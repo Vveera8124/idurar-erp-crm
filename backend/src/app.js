@@ -11,6 +11,7 @@ const coreDownloadRouter = require('./routes/coreRoutes/coreDownloadRouter');
 const corePublicRouter = require('./routes/coreRoutes/corePublicRouter');
 const adminAuth = require('./controllers/coreControllers/adminAuth');
 const queryRouter = require('./routes/appRoutes/queryRouter');
+const aiRouter = require('./routes/appRoutes/aiRouter');
 
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
@@ -42,6 +43,7 @@ app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
+app.use('/api/ai', aiRouter);
 
 //add query router
 app.use('/api', queryRouter);

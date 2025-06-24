@@ -7,6 +7,29 @@ const fs = require('fs');
 
 const currency = require('currency.js');
 
+const { GoogleGenAI } = require('@google/genai');
+
+//config this GooglegenAi with gemini api key to use the text generation feature
+exports.generateSummary = async (contents) => {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error(
+      `🔥 Common Error caused issue → : check your .env file first and add your GEMINI_API_KEY`
+    );
+    return;
+  }
+  const genAi = new GoogleGenAI({ apiKey });
+  const response = await genAi.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents,
+    config: {
+      systemInstruction:
+        'Summarize these notes in a user friendly way and professional way. Only return the summary content, without any introduction or headings.',
+    },
+  });
+  return response.text;
+};
+
 // moment.js is a handy library for displaying dates. We need this in our templates to display things like "Posted 5 minutes ago"
 exports.moment = require('moment');
 

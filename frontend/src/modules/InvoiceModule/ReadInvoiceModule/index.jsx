@@ -30,7 +30,7 @@ export default function ReadInvoiceModule({ config }) {
     return (
       <ErpLayout>
         {isSuccess ? (
-          <ReadItem config={config} selectedItem={currentResult} />
+          <ReadItem config={config} selectedItem={currentResult} showNotes />
         ) : (
           <NotFound entity={config.entity} />
         )}

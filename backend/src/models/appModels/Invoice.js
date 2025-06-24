@@ -91,6 +91,11 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      //added note field
+      note: {
+        type: String,
+        required: true,
+      },
     },
   ],
   taxRate: {

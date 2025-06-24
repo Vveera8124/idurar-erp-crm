@@ -296,6 +296,7 @@ html
           thead
             tr.tableHeader
               th.service #{translate('item')}
+              th.service #{translate('Note')}
               th #{translate('Quantity')}
               th #{translate('PRICE')}
               th #{translate('TOTAL')}
@@ -304,6 +305,8 @@ html
               tr
                 td.service #{item.itemName}
                   span #{item.description}
+                   //- |note in pdf
+                td.service #{item.note} 
                 td.qty #{item.quantity}  
                 td.unit  #{moneyFormatter({amount:item.price})}
                 td.total #{moneyFormatter({amount:item.total})}

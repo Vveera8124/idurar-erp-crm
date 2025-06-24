@@ -24,13 +24,15 @@ cd idurar-erp-crm
 
   This file will store environment variables for the project to run.
 
-#### Step 4: Update MongoDB URI
+#### Step 4: Update MongoDB URI and Gemini api key
 
 In the .env file, find the line that reads:
 
 `DATABASE="your-mongodb-uri"`
+`GEMINI_API_KEY="your-gemini-api-key"`
 
 Replace "your-mongodb-uri" with the actual URI of your MongoDB database.
+Replace "your-gemini-api-key" with yout actual api key
 
 #### Step 5: Install Backend Dependencies
 
@@ -93,7 +95,6 @@ This command will start the frontend server, and you'll be able to access the we
 :exclamation: :warning:` If you encounter an OpenSSL error while running the frontend server, follow these additional steps:`
 
 Reason behind error: This is caused by the node.js V17 compatible issues with OpenSSL, see [this](https://github.com/nodejs/node/issues/40547) and [this](https://github.com/webpack/webpack/issues/14532) issue on GitHub.
-
 
 Try one of these and error will be solved
 
